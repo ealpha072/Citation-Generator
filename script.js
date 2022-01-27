@@ -6,9 +6,16 @@ let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), 
 
 $(document).ready(function(){
     citation_options.forEach(element => {
-        option = `<option>${element}</option>`
+        let option = '';
+        if(element === 'Book'){
+            option = `<option class="" selected>${element}</option>`
+        }else{
+            option = `<option class="">${element}</option>`
+        }
+       
         styles_select.append(option)
     });
+
     sourcetypes.forEach(type=>{
         option = `<option>${type}</option>`
         type_select.append(option)

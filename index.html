@@ -15,10 +15,10 @@
             </div>
             <div class="card-body">
                 <div class="options">
-                    <div class="row styles">
-                        <div class="col">
-                            <label for="">Style: </label>
-                            <select name="" id="style-select" class="form-control form-control-sm" >
+                    <div class="form-group row">
+                        <label for="" class="col-sm-2">Style: </label>
+                        <div class="col-sm-9">
+                            <select name="" id="style-select" class="form-control form-control-sm">
                                 <option value="" selected disabled>Select Style</option>
                             </select>
                         </div>
@@ -30,20 +30,28 @@
                     <div class="reflist"></div>
                 </div>
 
-                <div class="form">
-                    <form action="">
-                        <div class="source_type">
-                            <label for="source">Type of Source: </label>
-                            <select name="" id="type-select" class="form-control form-control-sm">
-                                <option value="" disabled selected>Select type of source</option>
-                            </select>
-                        </div>
-                        <!--populate here with common fields-->
-                        <div class="buttons">
-                            <button class="btn btn-primary btn-sm">Create</button>
-                            <button class="btn btn-secondary btn-sm">Cancel</button>
-                        </div>
-                    </form>
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Reference Details</h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="">
+                            <div class="source_type form-group row">
+                                <label for="source">Type of Source: </label>
+                                <div class="col">
+                                    <select name="" id="type-select" class="form-control form-control-sm">
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <!--populate here with common fields-->
+                            <div class="buttons">
+                                <button class="btn btn-primary btn-sm">Create</button>
+                                <button class="btn btn-secondary btn-sm">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </div>
             </div>
         </div>
