@@ -14,8 +14,8 @@
                 <h6>Citation Generator</h6>
             </div>
             <div class="card-body">
-                <div class="options">
-                    <div class="form-group row">
+                <div class="options row">
+                    <div class="form-group col row">
                         <label for="" class="col-sm-2">Style: </label>
                         <div class="col-sm-9">
                             <select name="" id="style-select" class="form-control form-control-sm">
@@ -23,6 +23,16 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="source_type form-group col row">
+                        <label for="source">Type of Source: </label>
+                        <div class="col">
+                            <select name="" id="type-select" class="form-control form-control-sm">
+                                
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="results">
@@ -36,14 +46,7 @@
                     </div>
                     <div class="card-body">
                         <form action="">
-                            <div class="source_type form-group row">
-                                <label for="source">Type of Source: </label>
-                                <div class="col">
-                                    <select name="" id="type-select" class="form-control form-control-sm">
-                                        
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <!--populate here with common fields-->
                             <div class="buttons">
                                 <button class="btn btn-primary btn-sm">Create</button>
