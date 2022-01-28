@@ -66,3 +66,6 @@ class APA extends Reference{
         }
     }
 }
+
+
+//for each reference style, create a class that defines the rules 
