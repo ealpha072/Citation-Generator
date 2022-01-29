@@ -17,11 +17,17 @@
             <div class="card-body">
                 <div class="options row">
                     <div class="form-group col row">
-                        <label for="" class="col-sm-1">Style: </label>
-                        <div class="col-sm-6">
+                        <label for="" class="col-sm-1 col-form-label-sm">Style: </label>
+                        <div class="col-sm-3">
                             <select name="" id="style-select" class="form-control form-control-sm"></select>
                         </div>
+
+                        <label for="" class="col-sm-1 col-form-label-sm">Source Type</label>
                         <div class="col-sm-3">
+                            <select name="" id="source-select" class="form-control form-control-sm"></select>
+                        </div>
+
+                        <div class="col-sm-2">
                            <!-- Button trigger modal -->
                            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModal"> Add new Source </button>
     
@@ -30,12 +36,13 @@
                                 <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Modal title</h5>
+                                            <h5 class="modal-title"></h5>
+                                            <h6 id="selected-source"></h6>
                                         </div>
 
                                         <div class="modal-body">
                                             <form action="" id="add_source_form">
-                                                <div id="form-fields"></div>
+                                                
                                             </form>
                                         </div>
                                         <div class="modal-footer">
@@ -59,3 +66,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

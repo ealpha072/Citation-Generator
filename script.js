@@ -1,22 +1,18 @@
-let commonfields = ['Author', 'Corp Author', 'Title', 'Year'], sourcetypes = ['Book', 'Book Section','Journal Article', 'Article in a periodical', 'Report', 'Website', 'Document from Website' ],
+let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book', 'Book Section','Journal Article', 'Article in a periodical', 'Report', 'Website', 'Document from Website' ],
 citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
 
+const sources = [
+    {
+        name:'Book',
+        fields:['City', 'Publisher', 'Editor', 'Pages']
+    }
+]
 //tsource type fileds 
 let book_fields = ['City', 'Publisher', 'Editor', 'Pages']
 //dom elements
-let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), type_select = $('#type-select'), add_source = $('')
+let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), add_source = $('')
 
-$(document).ready(function(){
-    $('#exampleModal').on('show.bs.modal', function (){
-        //get form from the dorm
-        //create firlds
-        //atttach fields to form
-        let form = $('#add_source_form')
-        let formElements = generateForm([...commonfields, ...book_fields])
-        form.append(formElements)
-    })
-        
-
+$(document).ready(function(){        
     citation_options.forEach(element => {
         //consider reversing
         let option = '';
@@ -30,61 +26,56 @@ $(document).ready(function(){
     });
 
     sourcetypes.forEach(type=>{
-        //let option = (indexOf(type) === 0) ? `<option class="" selected disabled>${type}</option>` : `<option>${type}</option>`
-        //type_select.append(option)
+        let option = ''
+        option = (type === 'Book') ? `<option class="" selected>${type}</option>` : `<option class="">${type}</option>`
+        source_select.append(option)
+    })
+
+    $('#exampleModal').on('show.bs.modal', function (){
+        $(this).find('h5').text($('#style-select option:selected').text() + ' Referencing')
+        $(this).find('h6').text($('#source-select option:selected').text() + ' Source')
+        $(this).find('form').html('')
+        generateForm([...commonfields, ])//add extra fields
     })
 })
 
-const generateForm = (fields)=> {
-    let biggerDiv = $('#form-fields')
-    fields.forEach(field => {
-        let div = `<div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">${field}</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control form-control-sm" id="" placeholder="${field}">
-            </div>
-        </div>`
-        biggerDiv.append(div)
-    })
-    return biggerDiv
-
-}
-
-
-class Reference {
-    constructor(Author, Corporate_Author, Title, Year) {
-        this.author = Author,
-        this.corporate_Author = Corporate_Author,
-        this.title = Title,
-        this.year = Year
-
-        this.createfields = function (fields = ['Author', 'Corporate Author', 'Title', 'Year']) {
-            let biggerDiv = ''
-            fields.forEach(field => {
-                let div = `<div class="form-group row">
-                    <label for="" class="col-sm-2 col-form-label">${field}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="" placeholder="${field}">
-                    </div>
-                </div>`
-                biggerDiv += div
-            })
-            return biggerDiv
+const generateForm = (commonFields) => {
+    let form = $('#add_source_form')
+    let specialFields = []
+    let sourceSelctedString = Array.from($('#selected-source').text().split(' '))
+    console.log(sourceSelctedString)
+    
+    for (var i = 0; i < sources.length; i++) {
+        if(sources[i].name === sourceSelctedString[0]){
+            let sourceIndex = sources.indexOf(sources[i])
+            specialFields = [...sources[sourceIndex].fields]
         }
     }
+    let allFields = [...commonFields, ...specialFields]
+
+    allFields.forEach(field => {
+        let div = ''
+        if(field === 'Authors'){
+            div = `<div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label-sm">${field}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="author" placeholder="${field}">
+
+                    <div class="mt-2 form-inline">
+                        <input type="checkbox" class="" id="check-corp-author">
+                        <label for="" class="col-form-label-sm mr-3 ml-2">Corporate Author</label>
+                        <input type="text" name="" id="" placeholder="Corporate Author" class="form-control form-control-sm col-sm-9">
+                    </div>
+                </div>
+            </div>`
+        }else{
+            div = `<div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label-sm">${field}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="" placeholder="${field}">
+                </div>
+            </div>`
+        }
+        form.append(div)
+    })
 }
-
-
-//for each reference style, create a class that defines the rules 
-/* 
-    when ref_type and sourcetype is selected, generate the form;
-    -->get the reftype
-    -->get the sourcetype
-    -->generate form
-        -->declare a new class with reftype as name eg (let apa = new APA())
-        -->call the create form method of the class
-
-    when i click, generate reference, 
-        -->get the style and source type
-        -->
-*/
