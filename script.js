@@ -1,14 +1,17 @@
-let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book', 'Book Section','Journal Article', 'Article in a periodical', 'Report', 'Website', 'Document from Website' ],
+let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book',  'Report' ],
 citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
 
 const sources = [
     {
         name:'Book',
         fields:['City', 'Publisher', 'Editor', 'Pages']
+    },
+    {
+        name:'Report',
+        fields:['Publisher']
     }
 ]
-//tsource type fileds 
-let book_fields = ['City', 'Publisher', 'Editor', 'Pages']
+
 //dom elements
 let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), add_source = $('')
 
@@ -16,11 +19,7 @@ $(document).ready(function(){
     citation_options.forEach(element => {
         //consider reversing
         let option = '';
-        if(element === 'Book'){
-            option = `<option class="" selected>${element}</option>`
-        }else{
-            option = `<option class="">${element}</option>`
-        }
+        option = (element === 'Book') ? `<option class="" selected>${element}</option>`: `<option class="">${element}</option>`
        
         styles_select.append(option)
     });
@@ -35,7 +34,7 @@ $(document).ready(function(){
         $(this).find('h5').text($('#style-select option:selected').text() + ' Referencing')
         $(this).find('h6').text($('#source-select option:selected').text() + ' Source')
         $(this).find('form').html('')
-        generateForm([...commonfields, ])//add extra fields
+        generateForm(commonfields)//add extra fields
     })
 })
 
@@ -43,7 +42,6 @@ const generateForm = (commonFields) => {
     let form = $('#add_source_form')
     let specialFields = []
     let sourceSelctedString = Array.from($('#selected-source').text().split(' '))
-    console.log(sourceSelctedString)
     
     for (var i = 0; i < sources.length; i++) {
         if(sources[i].name === sourceSelctedString[0]){
