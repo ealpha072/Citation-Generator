@@ -1,16 +1,18 @@
-let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book',  'Report' ],
+let commonfields = ['Authors' /*'Title', 'Year'*/], sourcetypes = ['Book',  'Report' ],
 citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
 
 const sources = [
     {
         name:'Book',
-        fields:['City', 'Publisher', 'Editor', 'Pages']
+        fields:['City'/*,'Publisher', 'Editor', 'Pages'*/]
     },
     {
         name:'Report',
         fields:['Publisher']
     }
 ]
+
+const user_ref_list = [{}];
 
 //dom elements
 let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), add_source = $('')
@@ -35,6 +37,22 @@ $(document).ready(function(){
         $(this).find('h6').text($('#source-select option:selected').text() + ' Source')
         $(this).find('form').html('')
         generateForm(commonfields)//add extra fields
+
+        let buttons = `
+            <div class="">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="save_ref">Save changes</button>
+            </div>`
+        $('#add_source_form').append(buttons)
+        
+    })
+
+    $('#add_source_form').submit(function(e){
+        e.preventDefault()
+
+        var formData = $(this).serializeArray()
+        console.log(formData)
+        
     })
 })
 
@@ -57,12 +75,12 @@ const generateForm = (commonFields) => {
             div = `<div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label-sm">${field}</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-sm" id="author" placeholder="${field}">
+                    <input type="text" class="form-control form-control-sm" id="author" placeholder="${field}" name="${field}">
 
                     <div class="mt-2 form-inline">
                         <input type="checkbox" class="" id="check-corp-author">
                         <label for="" class="col-form-label-sm mr-3 ml-2">Corporate Author</label>
-                        <input type="text" name="" id="" placeholder="Corporate Author" class="form-control form-control-sm col-sm-9">
+                        <input type="text" name="" id="" placeholder="Corporate Author" name= "Corporate Author" class="form-control form-control-sm col-sm-9">
                     </div>
                 </div>
             </div>`
@@ -70,7 +88,7 @@ const generateForm = (commonFields) => {
             div = `<div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label-sm">${field}</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-sm" id="" placeholder="${field}">
+                    <input type="text" class="form-control form-control-sm" id="" placeholder="${field}" name="${field}">
                 </div>
             </div>`
         }
