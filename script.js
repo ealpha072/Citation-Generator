@@ -1,10 +1,10 @@
-let commonfields = ['Authors' /*'Title', 'Year'*/], sourcetypes = ['Book',  'Report' ],
+let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book',  'Report' ],
 citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
 
 const sources = [
     {
         name:'Book',
-        fields:['City'/*,'Publisher', 'Editor', 'Pages'*/]
+        fields:['City','Publisher', 'Editor', 'Pages']
     },
     {
         name:'Report',
@@ -49,10 +49,8 @@ $(document).ready(function(){
 
     $('#add_source_form').submit(function(e){
         e.preventDefault()
-
         var formData = $(this).serializeArray()
         console.log(formData)
-        
     })
 })
 
@@ -94,4 +92,46 @@ const generateForm = (commonFields) => {
         }
         form.append(div)
     })
+}
+
+class APA {
+    constructor(authors, title, year){
+        this.authors = authors
+        this.title = title
+        this.year = year
+    }
+
+    bookReference(commonFields, bookfields) {
+        let reference = ''
+
+        function sanitizeAuthor(author){
+            //takes in array of authors
+            //['Kelly Rob']
+            let numAuthors = author.length
+
+            switch (numAuthors) {
+                case numAuthors == 1:
+                    var authorNameArray = Array.from(author[0].split(' '))
+                    let lastName = authorNameArray[authorNameArray.length - 1], 
+                        firstInitial = authorNameArray[0].charAt(0).toUpperCase(),
+                        middleInitial = authorNameArray[1].charAt(0).toUpperCase()
+                    return `${lastName}, ${firstInitial}.${middleInitial}`
+
+                case numAuthors == 2:
+                    author.forEach(item=>{
+                        var authorNameArray = Array.from(item[0].split(' '))
+                        let lastName = authorNameArray[authorNameArray.length - 1], 
+                            firstInitial = authorNameArray[0].charAt(0).toUpperCase(),
+                            middleInitial = authorNameArray[1].charAt(0).toUpperCase(),
+                            authorFullRef= `${lastName}, ${firstInitial}.${middleInitial}`
+                        return authorFullRef.join('&');
+                    })
+                
+                case numAuthors == 3:
+
+                default:
+                    break;
+            }
+        }
+    }
 }

@@ -1,5 +1,4 @@
-let array = ['Arrd', 'OOOO']
-let arr2 = ['NMNN','JJKJ']
+let fullname = 'Alpha emmanuel Ochieng'
+var fname = Array.from(fullname.split(' '))
 
-let arr3 = [...array, ...arr2]
-console.log(arr3)
+console.log(fname[fname.length - 1])
