@@ -110,22 +110,24 @@ class APA {
             let numAuthors = author.length
 
             switch (numAuthors) {
-                case numAuthors == 1:
+                case 1:
                     var authorNameArray = Array.from(author[0].split(' '))
                     let lastName = authorNameArray[authorNameArray.length - 1], 
                         firstInitial = authorNameArray[0].charAt(0).toUpperCase(),
                         middleInitial = authorNameArray[1].charAt(0).toUpperCase()
                     return `${lastName}, ${firstInitial}.${middleInitial}`
 
-                case numAuthors == 2:
+                case 2:
+                    let twoAuthors = []
                     author.forEach(item=>{
                         var authorNameArray = Array.from(item[0].split(' '))
                         let lastName = authorNameArray[authorNameArray.length - 1], 
                             firstInitial = authorNameArray[0].charAt(0).toUpperCase(),
                             middleInitial = authorNameArray[1].charAt(0).toUpperCase(),
                             authorFullRef= `${lastName}, ${firstInitial}.${middleInitial}`
-                        return authorFullRef.join('&');
+                        twoAuthors.push(authorFullRef)
                     })
+                    return twoAuthors.join(' & ');
                 
                 case numAuthors == 3:
 
