@@ -1,18 +1,15 @@
 let commonfields = ['Authors', 'Title', 'Year'], sourcetypes = ['Book',  'Report' ],
-citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
+    citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
 
 const sources = [
     {
         name:'Book',
         fields:['City','Publisher', 'Editor', 'Pages']
-    },
-    {
+    },{
         name:'Report',
         fields:['Publisher']
     }
 ]
-
-const user_ref_list = [{}];
 
 //dom elements
 let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), add_source = $('')
@@ -318,7 +315,7 @@ function Reference(style){
     }
 }
 
-Reference.prototype.apa = (source, obj)=> {
+Reference.prototype.getRef = (source, obj)=>{
     this.source = source
     
     for(var field in obj){
@@ -327,9 +324,68 @@ Reference.prototype.apa = (source, obj)=> {
 
     switch (this.source) {
         case 'Book':
-            return `${this.sanitizeAuthor()}.(${this.year}).${this.title}.${this.publisher} `
-            break;
-    
+            switch (this.style) {
+                case 'APA':
+                    return `${this.sanitizeAuthor(this.author)}.(${this.year}).${this.title}.${this.publisher}`
+                case 'Harvard':
+                    return null //return something here
+                default:
+                    break;
+            }
+        case 'Report':
+            switch (this.style) {
+                case 'APA':
+                    return `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title} (${this.reportNum}). ${this.location}: ${this.publisher}`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }    
+        case 'Journal':
+            switch (this.style) {
+                case 'APA':
+                    return `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title}. ${this.journalTitle}, ${this.volume}(${this.issueNum}), ${this.pages}. ${this.doi}`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }
+        case 'Website':
+            switch (this.style) {
+                case 'APA':
+                    return `${this.sanitizeAuthor(this.author)}. (${this.year}, ${this.month} ${this.day}). ${this.title}. ${this.url}, ${this.webname}.`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }
+        case 'Thesis':
+            switch (this.style) {
+                case 'APA':
+                    return  `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title} [${this.thesisType}, ${this.university}]. ${this.url}.`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }
+        case 'Legislation':
+            switch (this.style) {
+                case 'APA':
+                    return `${this.title} ${this.year} (${this.jurisdictionAbbr}) s. ${this.sectNUm} (${this.countryAbbr})`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }
+        case 'Caselaw':
+            switch (this.style) {
+                case 'APA':
+                    return `${this.title} (${this.year} ${this.volumeNum} ${this.reporterAbbr} ${this.pageNum} (${this.countryAbbr}.).)`
+                case 'Harvard':
+                    return null //return sth here
+                default:
+                    break;
+            }
         default:
             break;
     }
