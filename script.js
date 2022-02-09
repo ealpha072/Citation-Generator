@@ -255,8 +255,7 @@ function APA(authors, title, year, publisher){
 
 function Reference(style){
     this.style = style
-    /*this.source = source
-    this.object = object*/
+    
     this.sanitizeAuthor = (author)=>{
         let numAuthors = author.length
         
@@ -317,5 +316,23 @@ function Reference(style){
             return finalList
         }
     }
+}
+
+Reference.prototype.apa = (source, obj)=> {
+    this.source = source
+    
+    for(var field in obj){
+        this[field] = obj[field]
+    }
+
+    switch (this.source) {
+        case 'Book':
+            return `${this.sanitizeAuthor()}.(${this.year}).${this.title}.${this.publisher} `
+            break;
+    
+        default:
+            break;
+    }
+
 }
 
