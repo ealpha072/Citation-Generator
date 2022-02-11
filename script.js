@@ -12,7 +12,8 @@ const sources = [
 ]
 
 //dom elements
-let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), add_source = $('')
+let styles_select = $('#style-select'), bibliography_select = $('#bib-select'), source_select = $('#source-select'), bibliography = $('#user-bibliography')
+const userReferences = []
 class Reference {
     constructor(style, source, obj) {
         this.style = style
@@ -32,12 +33,12 @@ class Reference {
                 firstInitial = authorNameArray[0].charAt(0).toUpperCase(), 
                 middleInitial = authorNameArray[1].charAt(0).toUpperCase()
             //check the end of initials punctuation
-            switch (this.style) {
-                case 'APA':
-                    return `${lastName}, ${firstInitial}.${middleInitial}`
-                case 'Harvard':
-                    return `${lastName}, ${firstInitial}${middleInitial},`
+            if(this.style === 'APA'){
+                return `${lastName}, ${firstInitial}.${middleInitial}`
+            }else if(this.style === 'Harvard'){
+                return `${lastName}, ${firstInitial}${middleInitial},`
             }
+    
         } else if (numAuthors === 2) {
             //console.log(author)
             let twoAuthors = []
@@ -54,9 +55,8 @@ class Reference {
                     authorFullRef = `${lastName +', ' + firstInitial+middleInitial}`
                 }
                 twoAuthors.push(authorFullRef)
-                
             })
-            console.log(twoAuthors.join(' & '))
+            return twoAuthors.join(' & ')
         } else if (numAuthors > 2 && numAuthors <= 20) {
             let manyAuthors = []
             author.forEach(item => {
@@ -66,14 +66,13 @@ class Reference {
                     firstInitial = authorNameArray[0].charAt(0).toUpperCase(), 
                     middleInitial = authorNameArray[1].charAt(0).toUpperCase(), 
                     authorFullRef = ''
-                switch (this.style) {
-                    case "APA":
-                        authorFullRef = `${lastName}, ${firstInitial}. ${middleInitial}`
-                        manyAuthors.push(authorFullRef)
-                    case "Harvard":
-                        authorFullRef = `${lastName}, ${firstInitial}${middleInitial}`
-                        manyAuthors.push(authorFullRef)
+                
+                if(this.style === 'APA'){
+                    authorFullRef = `${lastName}, ${firstInitial}. ${middleInitial}`
+                }else{
+                    authorFullRef = `${lastName}, ${firstInitial}${middleInitial}`
                 }
+                manyAuthors.push(authorFullRef)
             })
             let finalList = '', finalName = manyAuthors[manyAuthors.length - 1]
 
@@ -91,8 +90,8 @@ class Reference {
                 switch (this.style) {
                     case 'APA':
                         //let authr = this.sanitizeAuthor(this.author)
-                        console.log('Reached here')
-                        return `${this.sanitizeAuthor(this.author)}.(${this.year}). ${this.title}. ${this.publisher}`
+                        return `<li>${this.sanitizeAuthor(this.author)}.(${this.year}). <span style="font-style: italic;">${this.title}. </span>${this.publisher}</li>`
+                        //return `${this.sanitizeAuthor(this.author)}.(${this.year}). ${this.title}. ${this.publisher}`
                     case 'Harvard':
                         return null //return something here
                 }
@@ -190,16 +189,16 @@ $(document).ready(function(){
         e.preventDefault()
         let formData = $(this).serializeArray(), refStyle = $('#exampleModal').find('h5').text(), refSource = $('#exampleModal').find('h6').text()
         
-        console.log(formData)
         let obj = {}
-        //START FROM CONVERTING STRING TO ARRAY
         formData.forEach(data=>{
             obj[data.name] = data.value
         })
-        console.log(obj, refStyle)
-        
         let ref = new Reference(refStyle, refSource, obj)
-        ref.sanitizeAuthor(obj.author)
+        let generatedRef = ref.getRef()
+        userReferences.push({obj:obj, ref:generatedRef})
+        bibliography.html(' ')
+        render(userReferences)
+        $('#exampleModal').modal('hide')
     })
 })
 
@@ -243,6 +242,11 @@ const generateForm = (commonFields) => {
     })
 }
 
-
+const render = arr => {
+    arr.forEach(element => {
+        let listElem = element.ref
+        bibliography.append(listElem)
+    });
+}
 
 
