@@ -1,4 +1,8 @@
-let string = 'Alpha Emmanuel Ochieng'
-
-let arr  = [string]
-console.log(arr)
+switch (this.style) {
+    case 'APA':
+        authorFullRef = `${lastName}, ${firstInitial}.${middleInitial}.,`
+        twoAuthors.push(authorFullRef)
+    case 'Harvard':
+        authorFullRef = `${lastName}, ${firstInitial}${middleInitial},`
+        twoAuthors.push(authorFullRef)
+}
