@@ -1,13 +1,22 @@
-let commonfields = ['author', 'title', 'year'], sourcetypes = ['Book',  'Report' ],
-    citation_options = ['Harvard', 'APA', 'MLA', 'Chicago']
+let commonfields = ['author', 'title', 'year'], sourcetypes = ['Book', 'Report', 'Journal', 'Theses'],
+    citation_options = ['APA', 'Harvard']
 
 const sources = [
     {
         name:'Book',
-        fields:['publisher', 'pages']
+        fields:['publisher', 'pages', 'city']
     },{
         name:'Report',
-        fields:['Publisher']
+        fields:['publisher', 'url', 'city']
+    },{
+        name:'Journal',
+        fields:['journal_title', 'volume', 'issue', 'pages', 'doi']
+    },{
+        name:'Theses',
+        fields:['type', 'university', 'url', 'database', 'city']
+    },{
+        name:'Act',
+        fields:['jurisdiction_Abbr', 'section', 'country_abbr']
     }
 ]
 
@@ -34,7 +43,7 @@ class Reference {
                 middleInitial = authorNameArray[1].charAt(0).toUpperCase()
             //check the end of initials punctuation
             if(this.style === 'APA'){
-                return `${lastName}, ${firstInitial}.${middleInitial}`
+                return `${lastName}, ${firstInitial}.${middleInitial}.`
             }else if(this.style === 'Harvard'){
                 return `${lastName}, ${firstInitial}${middleInitial},`
             }
@@ -50,7 +59,7 @@ class Reference {
                     authorFullRef = ''
 
                 if(this.style === 'APA'){
-                    authorFullRef = `${lastName +', ' + firstInitial+ '.'+middleInitial}`
+                    authorFullRef = `${lastName +', ' + firstInitial+ '.'+middleInitial+"."}`
                 }else{
                     authorFullRef = `${lastName +', ' + firstInitial+middleInitial}`
                 }
@@ -89,68 +98,50 @@ class Reference {
             case 'Book':
                 switch (this.style) {
                     case 'APA':
-                        //let authr = this.sanitizeAuthor(this.author)
                         return `<li>${this.sanitizeAuthor(this.author)}.(${this.year}). <span style="font-style: italic;">${this.title}. </span>${this.publisher}</li>`
-                        //return `${this.sanitizeAuthor(this.author)}.(${this.year}). ${this.title}. ${this.publisher}`
                     case 'Harvard':
-                        return null //return something here
+                        return `<li>${this.sanitizeAuthor(this.author)} ${this.year}, <span style="font-style: italic;">${this.title}, </span>${this.publisher}, ${this.city} </li>`
                 }
             case 'Report':
                 switch (this.style) {
                     case 'APA':
-                        return `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title} (${this.reportNum}). ${this.location}: ${this.publisher}`
+                        return `<li>${this.sanitizeAuthor(this.author)}. (${this.year}). <span style="font-style: italic;">${this.title}</span>(${this.report_num}). ${this.publisher}. ${this.url}</li>`
                     case 'Harvard':
-                        return null //return sth here
-                    default:
-                        break
+                        /* */
+                        /*Author(s) of report (person or organisation) Family name, Initials Year of Publication, Title of report - italicised and sentence case, Report series name and Report number (if available), Publisher/Institution, Place of publication. */
+                        return `<li>${this.sanitizeAuthor(this.author)}, ${this.year}, <span style="font-style: italic;">${this.title}</span>, ${this.publisher}, ${this.city}</li>`
                 }
             case 'Journal':
                 switch (this.style) {
                     case 'APA':
-                        return `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title}. ${this.journalTitle}, ${this.volume}(${this.issueNum}), ${this.pages}. ${this.doi}`
+                        //'journal_title', 'volume', 'issue', 'pages', 'doi'
+                        return `<li>${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title}. <span style="font-style: italic;">${this.journal_title}, ${this.volume}</span>(${this.issue}), ${this.pages}. ${this.doi}</li>`
                     case 'Harvard':
-                        return null //return sth here
-                    default:
-                        break
+                        return `<li>${this.sanitizeAuthor(this.author) + ', ' + this.year}, '${this.title}', <span style="font-style: italic;">${this.journal_title}, vol. ${this.volume}, no. ${this.issue}, pp. ${this.pages}</span></li>`
                 }
             case 'Website':
                 switch (this.style) {
                     case 'APA':
-                        return `${this.sanitizeAuthor(this.author)}. (${this.year}, ${this.month} ${this.day}). ${this.title}. ${this.url}, ${this.webname}.`
+                        return `<li>${this.sanitizeAuthor(this.author)}. (${this.year}, ${this.month} ${this.day}). ${this.title}. ${this.url}, ${this.webname}.</li>`
                     case 'Harvard':
                         return null //return sth here
-                    default:
-                        break
                 }
-            case 'Thesis':
+            case 'Theses':
                 switch (this.style) {
                     case 'APA':
-                        return `${this.sanitizeAuthor(this.author)}. (${this.year}). ${this.title} [${this.thesisType}, ${this.university}]. ${this.url}.`
+                        //['type', 'universty', 'url', 'database']
+                        return `<li>${this.sanitizeAuthor(this.author)}. (${this.year}). <span style="font-style: italic">${this.title}</span> [${this.type}, ${this.university}]. ${this.database + '. ' + this.url}.<li>`
                     case 'Harvard':
-                        return null //return sth here
-                    default:
-                        break
+                        return `<li>${this.sanitizeAuthor(this.author) + ' ' + this.year}, '${this.title}', ${this.type}, ${this.university}, ${this.city}</li>`
                 }
-            case 'Legislation':
+            case 'Act':
                 switch (this.style) {
                     case 'APA':
-                        return `${this.title} ${this.year} (${this.jurisdictionAbbr}) s. ${this.sectNUm} (${this.countryAbbr})`
+                        //['jurisdiction_Abbr', 'section', 'country_abbr']
+                        return `<li><span style="font-style: italic">${this.title}</span> ${this.year} (${this.jurisdiction_Abbr}) s. ${this.section} (${this.country_abbr}.).</li>`
                     case 'Harvard':
-                        return null //return sth here
-                    default:
-                        break
+                        return `<li>${this.title} <span style="font-style:italic;">${this.year} </span>${this.jurisdiction_Abbr}</li>`
                 }
-            case 'Caselaw':
-                switch (this.style) {
-                    case 'APA':
-                        return `${this.title} (${this.year} ${this.volumeNum} ${this.reporterAbbr} ${this.pageNum} (${this.countryAbbr}.).)`
-                    case 'Harvard':
-                        return null //return sth here
-                    default:
-                        break
-                }
-            default:
-                break
         }
     }
 }
@@ -196,6 +187,7 @@ $(document).ready(function(){
         let ref = new Reference(refStyle, refSource, obj)
         let generatedRef = ref.getRef()
         userReferences.push({obj:obj, ref:generatedRef})
+        console.log(userReferences)
         bibliography.html(' ')
         render(userReferences)
         $('#exampleModal').modal('hide')
