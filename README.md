@@ -3,4 +3,4 @@ A citation generator for various refrence styles in literature
 
 Done 
 *   APA AND HARVARD- Book, Report, Journal, Theses.
-* Add more styles to the app
+* Add more styles to the app and more functionalities
